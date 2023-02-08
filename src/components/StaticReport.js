@@ -48,7 +48,7 @@ class StaticReport extends Component {
                               {element.name}
                             </td>
                             <td scope="row">{element.count}</td>
-                            <td scope="row" style={{ backgroundColor: "red" }}>
+                            <td scope="row" style={{ backgroundColor: "pink" }}>
                               {element.total_amount.slice(0, -3)}
                             </td>
                           </tr>
