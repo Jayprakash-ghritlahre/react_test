@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 
 import InventoryReport from './components/InventoryReport';
-import Cookies from 'js-cookie';
 
 const session_api = '/my_profile'
 const MY_ROUTES = {'/inventory_report': 'Inventory Report'}
@@ -14,7 +13,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       userDetails: {},
-      tokenLoaded: false
+      tokenLoaded: false,
+      accessToken: "8e79832d0730111055fc38c9d400eabc"
     }
   }
 
@@ -25,20 +25,7 @@ class App extends React.Component {
     document.body.appendChild(script)
 
     const queryParams = new URLSearchParams(window.location.search);
-    var accessToken = queryParams.get('access_token')
-    if(accessToken){
-      document.cookie = "access_token="+ accessToken
-      queryParams.delete('access_token')
-      window.location.search = queryParams
-    }
-    else{
-      accessToken = Cookies.get('access_token')
-      if(!accessToken){
-        alert('Session Expired, Please login again')
-        window.location = process.env.REACT_APP_AUTH_URL
-        return 0;
-      }
-    }
+    var accessToken = this.state.accessToken
     fetch(process.env.REACT_APP_API_URL + session_api, {method: 'GET', headers: {'Authorization': 'Bearer '+ accessToken}})
       .then(response => response.json())
       .then((response) => {

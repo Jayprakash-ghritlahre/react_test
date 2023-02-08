@@ -2,7 +2,6 @@ import React, {Component, createRef} from 'react'
 import StaticReport from './StaticReport';
 import Multiselect from 'multiselect-react-dropdown';
 import { ColorRing } from  'react-loader-spinner'
-import Cookies from 'js-cookie';
 import Moment from 'moment';
 
 
@@ -47,7 +46,7 @@ class InventoryReport extends Component {
     this.initialRankData = createRef(0)
 
     this.state = {...this.initialState };
-
+    this.state.accessToken = "8e79832d0730111055fc38c9d400eabc"
     this.calculateData = this.calculateData.bind(this)
     this.onSelect = this.onSelect.bind(this)
     this.generateOptions = this.generateOptions.bind(this)
@@ -61,7 +60,7 @@ class InventoryReport extends Component {
   }  
 
   getBreakdownData() {
-    let accessToken = Cookies.get('access_token')
+    let accessToken = this.state.accessToken
     let queryParams = this.state.filterHash
     fetch(process.env.REACT_APP_API_URL + "/inventory_report", {method: 'POST', headers: {'Authorization': 'Bearer '+ accessToken, 'Content-Type': 'application/json'}, body: JSON.stringify(queryParams)})
       .then(response => response.json())
@@ -109,7 +108,7 @@ class InventoryReport extends Component {
   }
 
   calculateData(event){
-    let accessToken = Cookies.get('access_token')
+    let accessToken = this.state.accessToken
     this.setState({BreakdownDataLoaded: false})
     let queryParams = this.serialize(this.state.filterHash)
     fetch(process.env.REACT_APP_API_URL + "/items?"+ queryParams, {method: 'GET', headers: {'Authorization': 'Bearer '+ accessToken }})
